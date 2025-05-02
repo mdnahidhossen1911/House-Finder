@@ -45,7 +45,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               backgroundColor:
                   controller.hiddenDrawerIsVisible
                       ? AppColors.themeColor
-                      : Colors.white,
+                      : Color(0xfffafafa),
               elevation: 0,
             );
           },

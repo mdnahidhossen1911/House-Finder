@@ -36,16 +36,149 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildSearchBar(),
           SizedBox(height: 16),
           _buildTapBarSection(),
-          SizedBox(height: 28),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              Text('Near from you',style: TextStyle(),),
-              Text('data'),
-            ],),
-          )
+          SizedBox(height: 20),
+          _buildSectionTitle('Near from you'),
+          SizedBox(
+            height: 291,
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              scrollDirection: Axis.horizontal,
+              itemCount: 2,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 271,
+                  width: 221,
+                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(color: Colors.grey.shade400,blurRadius: 10,spreadRadius: -13,offset: Offset(0, 4))
+                    ]
+                  ),
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        height: 272,
+                        width: 222,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            AssetsPath.house1,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.transparent,
+                              Color(0x610d0d0d),
+                              Color(0x99000000),
+                            ],
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              right: 16,
+                              top: 16,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Color(0x3D000000),
+                                ),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(AssetsPath.icLocation,height: 16,),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      '1.8 km',
+                                      style: TextStyle(
+                                        fontFamily: Fonts.raleway,
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 16,
+                              left: 16,
+                              right: 16,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Dreamsville House',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: Fonts.raleway,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text('Jl. Sultan Iskandar Muda',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: Fonts.raleway,
+                                        color: Colors.white,
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 8),
+          _buildSectionTitle('Best for you'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontFamily: Fonts.raleway,
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+          ),
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'See more',
+              style: TextStyle(
+                fontFamily: Fonts.raleway,
+                color: Color(0xff858585),
+                fontSize: 12,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -77,7 +210,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [AppColors.whiteBlue, AppColors.themeColor],
-                        ) : null
+                        )
+                        : null,
               ),
               child: Center(
                 child: Text(
@@ -169,6 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _locationDropdown(),
         ],
       ),
+      forceMaterialTransparency: true,
       leading: IconButton(
         onPressed: () {
           Get.find<HiddenDrawerController>().visibilityToggle();
