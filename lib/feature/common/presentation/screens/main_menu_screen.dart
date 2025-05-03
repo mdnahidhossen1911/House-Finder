@@ -18,8 +18,6 @@ class MainMenuScreen extends StatefulWidget {
 class _MainMenuScreenState extends State<MainMenuScreen> {
   int index = 0;
 
-
-
   final List<Widget> _screens =[
     HomeScreen(),
     DevelopmentScreen(appBarTitle: 'Profile'),
@@ -30,8 +28,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     DevelopmentScreen(appBarTitle: 'Setting'),
     DevelopmentScreen(appBarTitle: 'Help'),
   ];
-
-
 
   @override
   Widget build(BuildContext context) {

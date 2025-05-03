@@ -5,4 +5,5 @@ List <String> galleryList = [
   AssetsPath.gallery2,
   AssetsPath.gallery3,
   AssetsPath.gallery4,
+  AssetsPath.house1,
 ];

@@ -8,15 +8,16 @@ class HouseDataModel {
   double? price;
   String? distance;
 
-  HouseDataModel(
-      {this.title,
-        this.subtitle,
-        this.description,
-        this.badCount,
-        this.bathCount,
-        this.image,
-        this.price,
-        this.distance});
+  HouseDataModel({
+    this.title,
+    this.subtitle,
+    this.description,
+    this.badCount,
+    this.bathCount,
+    this.image,
+    this.price,
+    this.distance,
+  });
 
   HouseDataModel.fromJson(Map<String, dynamic> json) {
     title = json['title'];

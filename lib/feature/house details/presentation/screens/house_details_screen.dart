@@ -169,9 +169,9 @@ class _HouseDetailsScreenState extends State<HouseDetailsScreen> {
       height: 72,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: galleryList.length < 4 ? galleryList.length : 4,
+        itemCount: galleryList.length <= 4 ? galleryList.length : 4,
         itemBuilder: (context, index) {
-          if (index == 3) {
+          if (galleryList.length > 4 && index == 3) {
             return Stack(
               children: [
                 _buildGalleryImage(AssetsPath.gallery4),

@@ -6,6 +6,8 @@ import 'package:housefinder/app/assets_path.dart';
 import 'package:housefinder/app/fonts.dart';
 import 'package:housefinder/feature/common/presentation/controller/hidden_drawer_controller.dart';
 import 'package:housefinder/feature/home/data/best_for_you_data.dart';
+import 'package:housefinder/feature/home/data/category_list.dart';
+import 'package:housefinder/feature/home/data/drop_down_list.dart';
 import 'package:housefinder/feature/home/data/model/house_data_model.dart';
 import 'package:housefinder/feature/home/data/near_for_you_data.dart';
 import 'package:housefinder/feature/home/presentation/controller/category_controller.dart';
@@ -24,17 +26,18 @@ class _HomeScreenState extends State<HomeScreen> {
   final CategoryController _categoryController = CategoryController();
   final DropdownController _dropdownController = DropdownController();
 
-  List<String> _drpoDownListlist = <String>['Jakarta', 'Dubai', 'Dhaka'];
-  List<String> categoryList = ['House', 'Apartment', 'Hotel', 'Villa', 'Cottage'];
-  List<HouseDataModel> nearFromYouList =[];
-  List<HouseDataModel> bestForYouList =[];
+  List<HouseDataModel> nearFromYouList = [];
+  List<HouseDataModel> bestForYouList = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-      _dropdownController.changeValue(_drpoDownListlist.first);
-    nearFromYouList = nearForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
-    bestForYouList = bestForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
+    _dropdownController.changeValue(dropDownList.first);
+    nearFromYouList =
+        nearForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
+    bestForYouList =
+        bestForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
   }
 
   @override
@@ -70,9 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               primary: false,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return BestForYouCard(
-                  houseDataModel: bestForYouList[index],
-                );
+                return BestForYouCard(houseDataModel: bestForYouList[index]);
               },
             ),
             SizedBox(height: 10),
@@ -82,9 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-
-  Widget _buildSectionTitle(String title,{VoidCallback? onTab}) {
+  Widget _buildSectionTitle(String title, {VoidCallback? onTab}) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 10),
       child: Row(
@@ -135,13 +134,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: controller.currentIndex == index ? null : Color(0xfff7f7f7),
+                    color:
+                        controller.currentIndex == index
+                            ? null
+                            : Color(0xfff7f7f7),
                     gradient:
                         controller.currentIndex == index
                             ? LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
-                              colors: [AppColors.whiteBlue, AppColors.themeColor],
+                              colors: [
+                                AppColors.whiteBlue,
+                                AppColors.themeColor,
+                              ],
                             )
                             : null,
                   ),
@@ -163,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           );
-        }
+        },
       ),
     );
   }
@@ -280,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller.changeValue(value!);
               },
               items:
-                  _drpoDownListlist.map<DropdownMenuItem<String>>((String value) {
+                  dropDownList.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -288,10 +293,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   }).toList(),
             ),
           );
-        }
+        },
       ),
     );
   }
 }
-
-
