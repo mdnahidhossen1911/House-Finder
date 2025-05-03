@@ -17,4 +17,8 @@ class AssetsPath {
 
   static String house1 = '$_basePathForImages/house1.png';
   static String house2 = '$_basePathForImages/house2.png';
+  static String house3 = '$_basePathForImages/house3.png';
+  static String house4 = '$_basePathForImages/house4.png';
+  static String house5 = '$_basePathForImages/house5.png';
+  static String house6 = '$_basePathForImages/house6.png';
 }

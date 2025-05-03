@@ -5,8 +5,10 @@ import 'package:housefinder/app/app_color.dart';
 import 'package:housefinder/app/assets_path.dart';
 import 'package:housefinder/app/fonts.dart';
 import 'package:housefinder/feature/common/presentation/controller/hidden_drawer_controller.dart';
+import 'package:housefinder/feature/home/data/best_for_you_data.dart';
 import 'package:housefinder/feature/home/data/model/house_data_model.dart';
 import 'package:housefinder/feature/home/data/near_for_you_data.dart';
+import 'package:housefinder/feature/home/presentation/widgets/best_for_you_card.dart';
 import 'package:housefinder/feature/home/presentation/widgets/near_from_vou_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,16 +20,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<String> list = <String>['Jakarta', 'Dubai', 'Dhaka'];
-  List<String> tabBar = ['House', 'Apartment', 'Hotel', 'Villa', 'Cottage'];
+  List<String> categoryList = ['House', 'Apartment', 'Hotel', 'Villa', 'Cottage'];
   late String dropdownValue;
-  int _tapbarIndex = 0;
+  int _categoryPositionIndex = 0;
   List<HouseDataModel> nearFromYouList =[];
+  List<HouseDataModel> bestForYouList =[];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
       dropdownValue = list.first;
-    nearFromYouList = NearForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
+    nearFromYouList = nearForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
+    bestForYouList = bestForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
   }
 
   @override
@@ -40,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 20),
             _buildSearchBar(),
             SizedBox(height: 16),
-            _buildTapBarSection(),
+            _buildCategory(),
             SizedBox(height: 20),
             _buildSectionTitle('Near from you'),
             SizedBox(
@@ -59,80 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 8),
             _buildSectionTitle('Best for you'),
             ListView.builder(
-              itemCount: 4,
+              itemCount: bestForYouList.length,
               primary: false,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: SizedBox(
-                          width: 70,
-                          height: 70,
-                          child: Image.asset(
-                            AssetsPath.house1,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Dreamsville House',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: Fonts.raleway,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Rp. 2.500.000.000 / Year',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: Fonts.raleway,
-                              color: AppColors.themeColor,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Row(
-                            children: [
-                              SvgPicture.asset(AssetsPath.icBad),
-                              SizedBox(width: 6),
-                              Text(
-                                '6 Bedroom',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: Fonts.raleway,
-                                  color: Color(0xFF858585),
-                                ),
-                              ),
-                              SizedBox(width: 16),
-                              SvgPicture.asset(AssetsPath.icBath),
-                              SizedBox(width: 6),
-                              Text(
-                                '4 Bathroom',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: Fonts.raleway,
-                                  color: Color(0xFF858585),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                return BestForYouCard(
+                  houseDataModel: bestForYouList[index],
                 );
               },
             ),
@@ -143,7 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+
+
+  Widget _buildSectionTitle(String title,{VoidCallback? onTab}) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 10),
       child: Row(
@@ -158,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: onTab,
             child: Text(
               'See more',
               style: TextStyle(
@@ -173,17 +111,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  SizedBox _buildTapBarSection() {
+  SizedBox _buildCategory() {
     return SizedBox(
       height: 36,
       child: ListView.builder(
-        itemCount: tabBar.length,
+        itemCount: categoryList.length,
         padding: EdgeInsets.symmetric(horizontal: 15),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              _tapbarIndex = index;
+              _categoryPositionIndex = index;
               setState(() {});
             },
             child: Container(
@@ -192,9 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: _tapbarIndex == index ? null : Color(0xfff7f7f7),
+                color: _categoryPositionIndex == index ? null : Color(0xfff7f7f7),
                 gradient:
-                    _tapbarIndex == index
+                    _categoryPositionIndex == index
                         ? LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -204,13 +142,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Center(
                 child: Text(
-                  tabBar[index],
+                  categoryList[index],
                   style: TextStyle(
                     fontSize: 12,
                     fontFamily: Fonts.raleway,
                     fontWeight: FontWeight.w500,
                     color:
-                        _tapbarIndex == index
+                        _categoryPositionIndex == index
                             ? Colors.white
                             : Color(0xff858585),
                   ),
@@ -344,4 +282,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
 

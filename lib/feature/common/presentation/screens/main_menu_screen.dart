@@ -9,7 +9,7 @@ import 'package:housefinder/feature/home/presentation/screens/home_screen.dart';
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
 
-  static const String name = '/MainHiddenDrawerScreen';
+  static const String name = '/';
 
   @override
   State<MainMenuScreen> createState() => _MainMenuScreenState();

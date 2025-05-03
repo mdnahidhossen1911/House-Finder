@@ -1,6 +1,6 @@
 import 'package:housefinder/app/assets_path.dart';
 
-List<Map<String, dynamic>> NearForYouData = [
+List<Map<String, dynamic>> nearForYouData = [
   {
     "title": "Dreamsville House",
     "subtitle": "Jl. Sultan Iskandar Muda, Jakarta Selatan",
