@@ -8,6 +8,8 @@ import 'package:housefinder/feature/common/presentation/controller/hidden_drawer
 import 'package:housefinder/feature/home/data/best_for_you_data.dart';
 import 'package:housefinder/feature/home/data/model/house_data_model.dart';
 import 'package:housefinder/feature/home/data/near_for_you_data.dart';
+import 'package:housefinder/feature/home/presentation/controller/category_controller.dart';
+import 'package:housefinder/feature/home/presentation/controller/dropdown_controller.dart';
 import 'package:housefinder/feature/home/presentation/widgets/best_for_you_card.dart';
 import 'package:housefinder/feature/home/presentation/widgets/near_from_vou_card.dart';
 
@@ -19,17 +21,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> list = <String>['Jakarta', 'Dubai', 'Dhaka'];
+  final CategoryController _categoryController = CategoryController();
+  final DropdownController _dropdownController = DropdownController();
+
+  List<String> _drpoDownListlist = <String>['Jakarta', 'Dubai', 'Dhaka'];
   List<String> categoryList = ['House', 'Apartment', 'Hotel', 'Villa', 'Cottage'];
-  late String dropdownValue;
-  int _categoryPositionIndex = 0;
   List<HouseDataModel> nearFromYouList =[];
   List<HouseDataModel> bestForYouList =[];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-      dropdownValue = list.first;
+      _dropdownController.changeValue(_drpoDownListlist.first);
     nearFromYouList = nearForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
     bestForYouList = bestForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
   }
@@ -114,49 +117,53 @@ class _HomeScreenState extends State<HomeScreen> {
   SizedBox _buildCategory() {
     return SizedBox(
       height: 36,
-      child: ListView.builder(
-        itemCount: categoryList.length,
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              _categoryPositionIndex = index;
-              setState(() {});
-            },
-            child: Container(
-              height: 48,
-              margin: EdgeInsets.symmetric(horizontal: 6),
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: _categoryPositionIndex == index ? null : Color(0xfff7f7f7),
-                gradient:
-                    _categoryPositionIndex == index
-                        ? LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [AppColors.whiteBlue, AppColors.themeColor],
-                        )
-                        : null,
-              ),
-              child: Center(
-                child: Text(
-                  categoryList[index],
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: Fonts.raleway,
-                    fontWeight: FontWeight.w500,
-                    color:
-                        _categoryPositionIndex == index
-                            ? Colors.white
-                            : Color(0xff858585),
+      child: GetBuilder(
+        init: _categoryController,
+        builder: (controller) {
+          return ListView.builder(
+            itemCount: categoryList.length,
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  controller.changeIndex(index);
+                },
+                child: Container(
+                  height: 48,
+                  margin: EdgeInsets.symmetric(horizontal: 6),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: controller.currentIndex == index ? null : Color(0xfff7f7f7),
+                    gradient:
+                        controller.currentIndex == index
+                            ? LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [AppColors.whiteBlue, AppColors.themeColor],
+                            )
+                            : null,
+                  ),
+                  child: Center(
+                    child: Text(
+                      categoryList[index],
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: Fonts.raleway,
+                        fontWeight: FontWeight.w500,
+                        color:
+                            controller.currentIndex == index
+                                ? Colors.white
+                                : Color(0xff858585),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           );
-        },
+        }
       ),
     );
   }
@@ -243,6 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Badge(
             child: SvgPicture.asset(
               AssetsPath.icNotification,
+              height: 21,
               color: Colors.black,
             ),
           ),
@@ -253,31 +261,34 @@ class _HomeScreenState extends State<HomeScreen> {
 
   DropdownButtonHideUnderline _locationDropdown() {
     return DropdownButtonHideUnderline(
-      child: SizedBox(
-        height: 30,
-        child: DropdownButton<String>(
-          value: dropdownValue,
-          dropdownColor: Colors.white,
-          icon: const Icon(Icons.arrow_drop_down_outlined),
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontFamily: Fonts.raleway,
-            fontWeight: FontWeight.w500,
-          ),
-          onChanged: (String? value) {
-            setState(() {
-              dropdownValue = value!;
-            });
-          },
-          items:
-              list.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-        ),
+      child: GetBuilder(
+        init: _dropdownController,
+        builder: (controller) {
+          return SizedBox(
+            height: 30,
+            child: DropdownButton<String>(
+              value: controller.value,
+              dropdownColor: Colors.white,
+              icon: const Icon(Icons.arrow_drop_down_outlined),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontFamily: Fonts.raleway,
+                fontWeight: FontWeight.w500,
+              ),
+              onChanged: (String? value) {
+                controller.changeValue(value!);
+              },
+              items:
+                  _drpoDownListlist.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+            ),
+          );
+        }
       ),
     );
   }

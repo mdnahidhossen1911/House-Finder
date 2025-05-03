@@ -14,6 +14,8 @@ class AssetsPath {
   static String icFilter = '$_basePathForIcons/ic_filter.svg';
   static String icBad = '$_basePathForIcons/ic_bad.svg';
   static String icBath = '$_basePathForIcons/ic_bath.svg';
+  static String icCall = '$_basePathForIcons/ic_call.svg';
+  static String icSms = '$_basePathForIcons/ic_sms.svg';
 
   static String house1 = '$_basePathForImages/house1.png';
   static String house2 = '$_basePathForImages/house2.png';
@@ -21,4 +23,14 @@ class AssetsPath {
   static String house4 = '$_basePathForImages/house4.png';
   static String house5 = '$_basePathForImages/house5.png';
   static String house6 = '$_basePathForImages/house6.png';
+
+  static String owner = '$_basePathForImages/owner.png';
+
+  static String gallery1 = '$_basePathForImages/gallary1.png';
+  static String gallery2 = '$_basePathForImages/gallary2.png';
+  static String gallery3 = '$_basePathForImages/gallary3.png';
+  static String gallery4 = '$_basePathForImages/gallary4.png';
+
+  static String map = '$_basePathForImages/map.png';
+
 }
