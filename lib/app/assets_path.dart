@@ -12,6 +12,9 @@ class AssetsPath {
   static String icHelp = '$_basePathForIcons/ic_help.svg';
   static String icLogout = '$_basePathForIcons/ic_logout.svg';
   static String icFilter = '$_basePathForIcons/ic_filter.svg';
+  static String icBad = '$_basePathForIcons/ic_bad.svg';
+  static String icBath = '$_basePathForIcons/ic_bath.svg';
 
-  static String house1 = '$_basePathForImages/house2.png';
+  static String house1 = '$_basePathForImages/house1.png';
+  static String house2 = '$_basePathForImages/house2.png';
 }

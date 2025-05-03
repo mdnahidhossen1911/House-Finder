@@ -5,6 +5,9 @@ import 'package:housefinder/app/app_color.dart';
 import 'package:housefinder/app/assets_path.dart';
 import 'package:housefinder/app/fonts.dart';
 import 'package:housefinder/feature/common/presentation/controller/hidden_drawer_controller.dart';
+import 'package:housefinder/feature/home/data/model/house_data_model.dart';
+import 'package:housefinder/feature/home/data/near_for_you_data.dart';
+import 'package:housefinder/feature/home/presentation/widgets/near_from_vou_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,138 +21,124 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> tabBar = ['House', 'Apartment', 'Hotel', 'Villa', 'Cottage'];
   late String dropdownValue;
   int _tapbarIndex = 0;
-
+  List<HouseDataModel> nearFromYouList =[];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    dropdownValue = list.first;
+      dropdownValue = list.first;
+    nearFromYouList = NearForYouData.map((e) => HouseDataModel.fromJson(e)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          _buildSearchBar(),
-          SizedBox(height: 16),
-          _buildTapBarSection(),
-          SizedBox(height: 20),
-          _buildSectionTitle('Near from you'),
-          SizedBox(
-            height: 291,
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              scrollDirection: Axis.horizontal,
-              itemCount: 2,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            _buildSearchBar(),
+            SizedBox(height: 16),
+            _buildTapBarSection(),
+            SizedBox(height: 20),
+            _buildSectionTitle('Near from you'),
+            SizedBox(
+              height: 291,
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                scrollDirection: Axis.horizontal,
+                itemCount: nearFromYouList.length,
+                itemBuilder: (context, index) {
+                  return NearFromYouCard(
+                    houseDataModel: nearFromYouList[index],
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 8),
+            _buildSectionTitle('Best for you'),
+            ListView.builder(
+              itemCount: 4,
+              primary: false,
+              shrinkWrap: true,
               itemBuilder: (context, index) {
-                return Container(
-                  height: 271,
-                  width: 221,
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(color: Colors.grey.shade400,blurRadius: 10,spreadRadius: -13,offset: Offset(0, 4))
-                    ]
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
                   ),
-                  child: Stack(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 272,
-                        width: 222,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox(
+                          width: 70,
+                          height: 70,
                           child: Image.asset(
                             AssetsPath.house1,
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.transparent,
-                              Color(0x610d0d0d),
-                              Color(0x99000000),
+                      SizedBox(width: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Dreamsville House',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: Fonts.raleway,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Rp. 2.500.000.000 / Year',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: Fonts.raleway,
+                              color: AppColors.themeColor,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Row(
+                            children: [
+                              SvgPicture.asset(AssetsPath.icBad),
+                              SizedBox(width: 6),
+                              Text(
+                                '6 Bedroom',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: Fonts.raleway,
+                                  color: Color(0xFF858585),
+                                ),
+                              ),
+                              SizedBox(width: 16),
+                              SvgPicture.asset(AssetsPath.icBath),
+                              SizedBox(width: 6),
+                              Text(
+                                '4 Bathroom',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: Fonts.raleway,
+                                  color: Color(0xFF858585),
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              right: 16,
-                              top: 16,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color(0x3D000000),
-                                ),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset(AssetsPath.icLocation,height: 16,),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '1.8 km',
-                                      style: TextStyle(
-                                        fontFamily: Fonts.raleway,
-                                        fontSize: 12,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 16,
-                              left: 16,
-                              right: 16,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Dreamsville House',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: Fonts.raleway,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text('Jl. Sultan Iskandar Muda',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: Fonts.raleway,
-                                        color: Colors.white,
-                                      )
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
                     ],
                   ),
                 );
               },
             ),
-          ),
-          SizedBox(height: 8),
-          _buildSectionTitle('Best for you'),
-        ],
+            SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
@@ -200,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               height: 48,
               margin: EdgeInsets.symmetric(horizontal: 6),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: _tapbarIndex == index ? null : Color(0xfff7f7f7),
@@ -355,3 +344,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+

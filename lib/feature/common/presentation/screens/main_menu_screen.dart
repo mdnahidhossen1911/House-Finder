@@ -41,12 +41,14 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
         child: GetBuilder<HiddenDrawerController>(
           builder: (controller) {
             return AppBar(
-              toolbarHeight: 0,
+              toolbarHeight: 1,
+              surfaceTintColor:  controller.hiddenDrawerIsVisible
+                  ? AppColors.themeColor
+                  : Color(0xfffafafa),
               backgroundColor:
                   controller.hiddenDrawerIsVisible
                       ? AppColors.themeColor
                       : Color(0xfffafafa),
-              elevation: 0,
             );
           },
         ),
@@ -72,7 +74,14 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       controller.hiddenDrawerIsVisible == true
                           ? BorderRadius.circular(17.4)
                           : BorderRadius.circular(0),
-                  child: _screens[controller.drawerCurrentIndex],
+                  child: GestureDetector(
+                    onTap: controller.hiddenDrawerIsVisible ? () {
+                      controller.visibilityToggle();
+                    }:null,
+                    child: AbsorbPointer(
+                        absorbing: controller.hiddenDrawerIsVisible,
+                        child: _screens[controller.drawerCurrentIndex]),
+                  ),
                 ),
               ),
             ],
